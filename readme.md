@@ -1,5 +1,3 @@
-![alt text](https://raw.githubusercontent.com/hosseinmd/react-global-hook/master/react-global-hook.png)
-
 [![NPM](https://nodei.co/npm/react-global-hook.png)](https://nodei.co/npm/react-global-hook/)
 
 [![install size](https://packagephobia.now.sh/badge?p=react-global-hook)](https://packagephobia.now.sh/result?p=react-global-hook) [![dependencies](https://david-dm.org/hosseinmd/react-global-hook.svg)](https://david-dm.org/hosseinmd/react-global-hook.svg)
