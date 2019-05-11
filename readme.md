@@ -31,7 +31,7 @@ const actions = {
   }
 };
 
-const { useGlobal, getGlobal } = createState(React, initialState, actions);
+const { useGlobal, getGlobal } = createState(initialState, actions);
 
 const App = () => {
   const [globalState, globalActions] = useGlobal(["counter"]);
