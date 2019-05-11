@@ -1,0 +1,44 @@
+{
+  "name": "react-global-hook",
+  "version": "0.0.1",
+  "description": "Hooks State Managment",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hosseinmd/react-global-hook.git"
+  },
+  "keywords": [
+    "hooks",
+    "hook",
+    "useHook",
+    "useState",
+    "useContext",
+    "useReducer",
+    "easy",
+    "state",
+    "state-management",
+    "performance",
+    "react",
+    "react-native",
+    "react-redux",
+    "javascript",
+    "javascript-library",
+    "global-state",
+    "global-variables",
+    "setstate",
+    "connect",
+    "components",
+    "library",
+    "high-performance",
+    "best-practices",
+    "react-global-hook",
+    "hossein",
+    "mohammadi"
+  ],
+  "author": "Hossein mohammadi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hosseinmd/react-global-hook/issues"
+  },
+  "homepage": "https://github.com/hosseinmd/react-global-hook#readme"
+}
