@@ -54,11 +54,5 @@ export const createState = (initialState, actions, initializer) => {
   store.setState = setState.bind(store);
   store.actions = associateActions(store, actions);
   if (initializer) initializer(store);
-  return {
-    useGlobal: useGlobal.bind(store),
-    getGlobal() {
-      return [store.state, store.actions];
-    }
-  };
+  return [useGlobal.bind(store), () => [store.state, store.actions]];
 };
-
