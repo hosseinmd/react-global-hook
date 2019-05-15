@@ -17,7 +17,7 @@ function setState(newState = {}) {
 function useGlobal(sensitiveStateKeys, listener) {
   if (typeof listener !== "function") listener = React.useState()[1];
   if (!Array.isArray(sensitiveStateKeys))
-    sensitiveStateKeys = Object.keys(this.listeners);
+    sensitiveStateKeys = Object.keys(this.state);
   React.useEffect(() => {
     sensitiveStateKeys.forEach(stateKey => {
       this.listeners[stateKey] = [
