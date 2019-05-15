@@ -1,6 +1,6 @@
 {
   "name": "react-global-hook",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hooks State Managment",
   "main": "index.js",
   "repository": {

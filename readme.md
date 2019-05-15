@@ -5,6 +5,7 @@
 # react-global-hook
 
 Easy state management for react & react-native using hooks.
+it's useful for global state management and complex components state
 
 ## install
 
