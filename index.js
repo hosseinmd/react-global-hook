@@ -1,7 +1,7 @@
 import React from "react";
 
 function setState(newState = {}) {
-  this.state = { ...this.state, ...newState };
+  Object.assign(this.state, { ...newState });
   let queueUpdate = [];
   Object.keys(newState).forEach(key => {
     if (this.listeners[key])
