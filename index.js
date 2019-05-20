@@ -4,8 +4,8 @@ function setState(newState = {}) {
   Object.assign(this.state, { ...newState });
   let queueUpdate = [];
   Object.keys(newState).forEach(key => {
-    if (this.listeners[key])
-      this.listeners[key].forEach(listener => {
+    if (this.__listeners[key])
+      this.__listeners[key].forEach(listener => {
         if (!queueUpdate.includes(listener)) queueUpdate.push(listener);
       });
   });
@@ -20,14 +20,14 @@ function useGlobal(sensitiveStateKeys, listener) {
     sensitiveStateKeys = Object.keys(this.state);
   React.useEffect(() => {
     sensitiveStateKeys.forEach(stateKey => {
-      this.listeners[stateKey] = [
-        ...(this.listeners[stateKey] || []),
+      this.__listeners[stateKey] = [
+        ...(this.__listeners[stateKey] || []),
         listener
       ];
     });
     return () => {
       sensitiveStateKeys.forEach(stateKey => {
-        this.listeners[stateKey] = this.listeners[stateKey].filter(
+        this.__listeners[stateKey] = this.__listeners[stateKey].filter(
           prevListener => prevListener !== listener
         );
       });
@@ -50,7 +50,7 @@ function associateActions(store, actions = {}) {
 }
 
 export const createState = (initialState, actions, initializer) => {
-  const store = { state: initialState, listeners: {} };
+  const store = { state: initialState, __listeners: {} };
   store.setState = setState.bind(store);
   store.actions = associateActions(store, actions);
   if (initializer) initializer(store);
