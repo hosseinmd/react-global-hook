@@ -10,7 +10,7 @@ function setState(newState = {}) {
       });
   });
   queueUpdate.forEach(listener => {
-    listener(this.state);
+    listener({ ...this.state });
   });
 }
 
