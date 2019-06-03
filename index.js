@@ -16,15 +16,18 @@ function setState(newState = {}) {
 
 function useGlobal(sensitiveStateKeys, listener) {
   if (typeof listener !== "function") listener = React.useState()[1];
-  if (!Array.isArray(sensitiveStateKeys))
-    sensitiveStateKeys = Object.keys(this.state);
+
   React.useEffect(() => {
+    if (!Array.isArray(sensitiveStateKeys))
+      sensitiveStateKeys = Object.keys(this.state);
+
     sensitiveStateKeys.forEach(stateKey => {
       this.__listeners[stateKey] = [
         ...(this.__listeners[stateKey] || []),
         listener
       ];
     });
+
     return () => {
       sensitiveStateKeys.forEach(stateKey => {
         this.__listeners[stateKey] = this.__listeners[stateKey].filter(
