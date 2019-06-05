@@ -24,7 +24,7 @@ function useGlobal(sensitiveStateKeys, listener) {
     sensitiveStateKeys.forEach(stateKey => {
       this.__listeners[stateKey] = [
         ...(this.__listeners[stateKey] || []),
-        listener
+        listener,
       ];
     });
 
@@ -44,8 +44,7 @@ function associateActions(store, actions = {}) {
   Object.keys(actions).forEach(key => {
     if (typeof actions[key] === "function") {
       associatedActions[key] = actions[key].bind(null, store);
-    }
-    if (typeof actions[key] === "object") {
+    } else if (typeof actions[key] === "object") {
       associatedActions[key] = associateActions(store, actions[key]);
     }
   });
