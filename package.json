@@ -3,6 +3,9 @@
   "version": "1.0.7",
   "description": "Hooks State Managment",
   "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/hosseinmd/react-global-hook.git"
@@ -40,5 +43,21 @@
   "bugs": {
     "url": "https://github.com/hosseinmd/react-global-hook/issues"
   },
-  "homepage": "https://github.com/hosseinmd/react-global-hook#readme"
+  "homepage": "https://github.com/hosseinmd/react-global-hook#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "@testing-library/react-hooks": "^1.0.4",
+    "jest": "^24.8.0",
+    "react": "^16.8.6",
+    "react-test-renderer": "^16.8.6"
+  },
+  "env": {
+    "test": {
+      "presets": [
+        "@babel/preset-env",
+        "@babel/preset-react"
+      ]
+    }
+  }
 }

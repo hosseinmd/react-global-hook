@@ -1,60 +1,13 @@
-import React from "react";
+"use strict";
 
-function setState(newState = {}) {
-  Object.assign(this.state, { ...newState });
-  let queueUpdate = [];
-  Object.keys(newState).forEach(key => {
-    if (this.__listeners[key])
-      this.__listeners[key].forEach(listener => {
-        if (!queueUpdate.includes(listener)) queueUpdate.push(listener);
-      });
-  });
-  queueUpdate.forEach(listener => {
-    listener({ ...this.state });
-  });
-}
-
-function useGlobal(sensitiveStateKeys, listener) {
-  if (typeof listener !== "function") listener = React.useState()[1];
-
-  React.useEffect(() => {
-    if (!Array.isArray(sensitiveStateKeys))
-      sensitiveStateKeys = Object.keys(this.state);
-
-    sensitiveStateKeys.forEach(stateKey => {
-      this.__listeners[stateKey] = [
-        ...(this.__listeners[stateKey] || []),
-        listener,
-      ];
-    });
-
-    return () => {
-      sensitiveStateKeys.forEach(stateKey => {
-        this.__listeners[stateKey] = this.__listeners[stateKey].filter(
-          prevListener => prevListener !== listener
-        );
-      });
-    };
-  }, []);
-  return [this.state, this.actions];
-}
-
-function associateActions(store, actions = {}) {
-  const associatedActions = {};
-  Object.keys(actions).forEach(key => {
-    if (typeof actions[key] === "function") {
-      associatedActions[key] = actions[key].bind(null, store);
-    } else if (typeof actions[key] === "object") {
-      associatedActions[key] = associateActions(store, actions[key]);
-    }
-  });
-  return associatedActions;
-}
+import { setState } from "./lib/setState";
+import { useState } from "./lib/hooks";
+import { associateActions } from "./lib/Actions";
 
 export const createState = (initialState, actions, initializer) => {
   const store = { state: initialState, __listeners: {} };
   store.setState = setState.bind(store);
   store.actions = associateActions(store, actions);
   if (initializer) initializer(store);
-  return [useGlobal.bind(store), () => [store.state, store.actions]];
+  return [useState.bind(store), () => [store.state, store.actions]];
 };
