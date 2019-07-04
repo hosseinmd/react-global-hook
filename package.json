@@ -1,9 +1,10 @@
 {
   "name": "react-global-hook",
-  "version": "1.0.11",
+  "version": "1.0.14",
   "description": "Hooks State Managment",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
+    "compile": "./node_modules/.bin/babel src --out-dir dist --presets=@babel/env",
     "test": "jest"
   },
   "repository": {
@@ -45,9 +46,10 @@
   },
   "homepage": "https://github.com/hosseinmd/react-global-hook#readme",
   "devDependencies": {
-    "@babel/preset-env": "^7.4.5",
+    "@babel/cli": "^7.5.0",
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.0",
     "@babel/preset-react": "^7.0.0",
-    "@babel/runtime": "^7.5.0",
     "@testing-library/react-hooks": "^1.0.4",
     "jest": "^24.8.0",
     "react": "^16.8.6",
