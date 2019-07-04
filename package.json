@@ -1,6 +1,6 @@
 {
   "name": "react-global-hook",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "Hooks State Managment",
   "main": "index.js",
   "scripts": {
@@ -52,12 +52,7 @@
     "react": "^16.8.6",
     "react-test-renderer": "^16.8.6"
   },
-  "env": {
-    "test": {
-      "presets": [
-        "@babel/preset-env",
-        "@babel/preset-react"
-      ]
-    }
+  "peerDependencies": {
+    "react": ">=16.0"
   }
 }
