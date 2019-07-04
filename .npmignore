@@ -1,2 +1,4 @@
 .prettierrc
-__test__/
+.gitattributes
+src/
+__tests__/

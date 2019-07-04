@@ -1,6 +1,6 @@
 import { renderHook, act } from "@testing-library/react-hooks";
 import { useCallback } from "react";
-import { createState } from "..";
+import { createState } from "../src";
 
 const [useGlobal, getGlobal] = createState(
   { count: 0 },
