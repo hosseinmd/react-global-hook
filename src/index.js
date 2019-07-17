@@ -1,13 +1,24 @@
 "use strict";
 
-import { setState } from "./lib/setState";
-import { useState } from "./lib/hooks";
-import { associateActions } from "./lib/Actions";
+import { createStore } from "@stately/core";
+import { createHooks } from "@stately/hooks";
 
-export const createState = (initialState, actions, initializer) => {
-  const store = { state: initialState, __listeners: {} };
-  store.setState = setState.bind(store);
-  store.actions = associateActions(store, actions);
-  if (initializer) initializer(store);
-  return [useState.bind(store), () => [store.state, store.actions]];
-};
+/** @typedef {import("@stately/core").store} store */
+
+/**
+ * @template S
+ * @template A
+ * @type {function}
+ * @param {S} initialState
+ * @param {A} actions
+ * @param {(store: store<S, A>) => void} initializer
+ * @returns {[ (sensitiveStateKeys: [keyof S], listener: Function) => [S, A],
+ *  () => [S, A] ]
+ * }
+ */
+export function createState(initialState, actions, initializer) {
+  const store = createStore(initialState, actions, initializer);
+  return [createHooks(store), () => [store.state, store.actions], store];
+}
+
+export { createStore, createHooks };

@@ -1,6 +1,6 @@
 {
   "name": "react-global-hook",
-  "version": "1.0.14",
+  "version": "1.1.0",
   "description": "Hooks State Managment",
   "main": "dist/index.js",
   "scripts": {
@@ -57,5 +57,9 @@
   },
   "peerDependencies": {
     "react": ">=16.0"
+  },
+  "dependencies": {
+    "@stately/core": "^0.0.3",
+    "@stately/hooks": "^0.0.3"
   }
 }
