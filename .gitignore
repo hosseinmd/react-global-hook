@@ -65,6 +65,3 @@ typings/
 
 # yarn
 yarn.lock
-
-#babel compile
-dist/
