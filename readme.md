@@ -7,6 +7,14 @@
 Easy state management for react & react-native using hooks.
 it's useful for global state management and complex components state
 
+## TOC
+
+* [install](#install)
+* [createState](#createState)
+* [useLocalStore](#useLocalStore)
+* [createStore](#createStore)
+* [stories](#stories)
+
 ## install
 
 ```npm
@@ -15,7 +23,9 @@ npm i react-global-hook --save
 
 ---
 
-### use
+## use
+
+### createState
 
 ```javascript
 import React from "react";
@@ -53,10 +63,7 @@ const App = () => {
   );
 };
 
-export default App;
 ```
-
-### getGlobal
 
 this function is for use state and actions out of component
 
@@ -67,6 +74,76 @@ function myApi(){
   ...
 }
 
+```
+
+### useLocalStore
+
+```javascript
+import { useLocalStore } from "react-global-hook";
+
+const App = () => {
+  const [state, actions] = useLocalStore(() => initialState, () => actions);
+
+  return (
+    <div>
+      <p>
+        counter:
+        {state.counter}
+      </p>
+      <button type="button" onClick={() => actions.addToCounter(1)}>
+        +1 to global
+      </button>
+    </div>
+  );
+};
+
+```
+
+
+### createStore
+
+```javascript
+import { createStore } from "react-global-hook";
+
+const store = createStore(initialState, actions);
+```
+#### setState
+Set partial state
+```js
+store.setState({counter: store.state.counter+1})
+```
+#### addListener
+Add an event listener.
+Listener run when a state update
+
+```js example
+//Run when counter update
+function logCounter(){
+ console.log(store.state.counter)
+}
+store.addListener(logCounter,["counter"])
+
+// run when any change in state invoke
+function logState(){
+ console.log(store.state)
+}
+store.addListener(logState,[])
+```
+
+#### actions
+gives initialed actions 
+
+**Notes**
+> Store is bound in first params.
+
+```js
+store.actions.addToCounter(3)
+```
+
+#### state 
+gives current state
+```js
+console.log(store.state.counter)
 ```
 
 ---
