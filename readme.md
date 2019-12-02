@@ -18,24 +18,24 @@ npm i react-global-hook --save
 ### use
 
 ```javascript
-import React from "react";
-import { createState } from "react-global-hook";
+import { createStore, createHooks } from "react-global-hook";
 
 const initialState = {
-  counter: 0
+  counter: 0,
 };
 
 const actions = {
   addToCounter: (store, amount) => {
     const newCounterValue = store.state.counter + amount;
     store.setState({ counter: newCounterValue });
-  }
+  },
 };
 
-const [useGlobal, getGlobal] = createState(initialState, actions);
+const store = createStore(initialState, actions);
+const useGlobal = createHooks(store);
 
 const App = () => {
-  const [globalState, globalActions] = useGlobal(["counter"]);
+  const [state, actions] = useGlobal(["counter"]);
   // this component update just when `counter` did update
   // if useGlobal parameter isn't defined this function will be update at any change state
   // if parameter is empty array like [] this function will never be update
@@ -44,32 +44,72 @@ const App = () => {
     <div>
       <p>
         counter:
-        {globalState.counter}
+        {state.counter}
       </p>
-      <button type="button" onClick={() => globalActions.addToCounter(1)}>
+      <button type="button" onClick={() => actions.addToCounter(1)}>
+        +1 to global
+      </button>
+      <OtherComp />
+    </div>
+  );
+};
+
+const OtherComp = () => {
+  const [state] = useGlobal(["counter"]);
+  return (
+    <p>
+      counter:
+      {state.counter}
+    </p>
+  );
+};
+
+```
+
+### useLocalStore
+Use this instead of useReducer
+
+```javascript
+
+import { useLocalStore } from "react-global-hook";
+
+const App = () => {
+  const [state, actions] = useLocalStore(
+    {
+      counter: 0,
+    },
+    {
+      increase: (store) => {
+        const newCounterValue = store.state.counter + 1;
+        store.setState({ counter: newCounterValue });
+      },
+    },
+  );
+
+  return (
+    <div>
+      <p>
+        counter:
+        {state.counter}
+      </p>
+      <button type="button" onClick={actions.increase}>
         +1 to global
       </button>
     </div>
   );
 };
 
-export default App;
 ```
 
-### getGlobal
+### store
 
-this function is for use state and actions out of component
+This function is for use state and actions out of component
 
 ```javascript
-function myApi(){
-  ...
-  const [globalState, globalActions] = getGlobal();
-  ...
-}
-
+const {state, actions, setState, addListener} = store;
 ```
 
 ---
 
 ## stories
-- [React use Hooks: How to use React Global Hook](https://medium.com/@hosseinm.developer/manage-state-with-react-hooks-how-to-use-react-global-hook-785331e5f1f)
+- [React use Hooks: How to use React Global Hook](https://medium.com/@hosseinm.developer/manage-state-with-react-hooks-how-to-use-react-global-hook-785331e5f1f) @depreceted
