@@ -56,9 +56,5 @@
   },
   "peerDependencies": {
     "react": ">=16.0"
-  },
-  "dependencies": {
-    "@stately/core": "^0.0.3",
-    "@stately/hooks": "^0.0.3"
   }
 }

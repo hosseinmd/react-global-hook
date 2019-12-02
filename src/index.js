@@ -1,22 +1,20 @@
 "use strict";
 
-import { createStore } from "@stately/core";
-import { createHooks } from "@stately/hooks";
-
-/** @typedef {import("@stately/core").store} store */
+import { createStore } from "./core";
+import { createHooks, useLocalStore } from "./hooks";
 
 /**
- * @template S
- * @template A
+ * @deprecated
+ * @template S , A
  * @type {function}
  * @param {S} initialState
  * @param {A} actions
- * @param {(store: store<S, A>) => void} initializer
- * @returns {[ (sensitiveStateKeys: [keyof S], listener: Function) => [S, A],() => [S, A] ]}
+ * @param {(store: import("./core").Store<S, A>) => void} initializer
+ * @returns {[ (sensitiveStateKeys: (keyof S)[], listener: Function) => [S, A],() => [S, A] ]}
  */
 export function createState(initialState, actions, initializer) {
   const store = createStore(initialState, actions, initializer);
   return [createHooks(store), () => [store.state, store.actions], store];
 }
 
-export { createStore, createHooks };
+export { createStore, createHooks, useLocalStore };
