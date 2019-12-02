@@ -103,8 +103,6 @@ const App = () => {
 
 ### store
 
-This function is for use state and actions out of component
-
 ```javascript
 const {state, actions, setState, addListener} = store;
 ```
