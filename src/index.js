@@ -12,9 +12,7 @@ import { createHooks } from "@stately/hooks";
  * @param {S} initialState
  * @param {A} actions
  * @param {(store: store<S, A>) => void} initializer
- * @returns {[ (sensitiveStateKeys: [keyof S], listener: Function) => [S, A],
- *  () => [S, A] ]
- * }
+ * @returns {[ (sensitiveStateKeys: [keyof S], listener: Function) => [S, A],() => [S, A] ]}
  */
 export function createState(initialState, actions, initializer) {
   const store = createStore(initialState, actions, initializer);
