@@ -7,15 +7,26 @@
 Easy state management for react & react-native using hooks.
 it's useful for global state management and complex components state
 
+
+## TOC
+
+* [install](#install)
+* [Create Store](#createStore)
+* [create Local Store ](#useLocalStore)
+* [Store](#Store)
+
 ## install
 
 ```npm
 npm i react-global-hook --save
 ```
 
----
+```npm
+yarn add react-global-hook 
+```
 
-### use
+
+## createStore
 
 ```javascript
 import { createStore, createHooks } from "react-global-hook";
@@ -66,7 +77,7 @@ const OtherComp = () => {
 
 ```
 
-### useLocalStore
+## useLocalStore
 Use this instead of useReducer
 
 ```javascript
@@ -101,7 +112,7 @@ const App = () => {
 
 ```
 
-### store
+## Store
 
 ```javascript
 const {state, actions, setState, addListener} = store;
