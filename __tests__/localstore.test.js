@@ -4,12 +4,12 @@ import { useLocalStore } from "../src";
 
 function TestComponent() {
   const [state, actions] = useLocalStore(
-    () => ({ count: 0 }),
-    () => ({
+    { count: 0 },
+    {
       increment(store) {
         store.setState({ count: store.state.count + 1 });
       },
-    }),
+    },
   );
 
   const increment = useCallback(() => actions.increment(), []);
