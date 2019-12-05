@@ -7,12 +7,13 @@
 Easy state management for react & react-native using hooks.
 it's useful for global state management and complex components state
 
+
 ## TOC
 
 * [install](#install)
-* [createState](#createState)
-* [useLocalStore](#useLocalStore)
-* [createStore](#createStore)
+* [Create Store](#createStore)
+* [create Local Store ](#useLocalStore)
+* [Store](#Store)
 * [stories](#stories)
 
 ## install
@@ -21,69 +22,36 @@ it's useful for global state management and complex components state
 npm i react-global-hook --save
 ```
 
----
+```npm
+yarn add react-global-hook 
+```
 
-## use
 
-### createState
+## createStore
 
 ```javascript
-import React from "react";
-import { createState } from "react-global-hook";
+import { createStore, createHooks } from "react-global-hook";
 
 const initialState = {
-  counter: 0
+  counter: 0,
 };
 
 const actions = {
   addToCounter: (store, amount) => {
     const newCounterValue = store.state.counter + amount;
     store.setState({ counter: newCounterValue });
-  }
+  },
 };
 
-const [useGlobal, getGlobal] = createState(initialState, actions);
+const store = createStore(initialState, actions);
+const useGlobal = createHooks(store);
 
 const App = () => {
-  const [globalState, globalActions] = useGlobal(["counter"]);
+  const [state, actions] = useGlobal(["counter"]);
   // this component update just when `counter` did update
   // if useGlobal parameter isn't defined this function will be update at any change state
   // if parameter is empty array like [] this function will never be update
   // if 2nd parameter define function this function will be run instead update componentF
-  return (
-    <div>
-      <p>
-        counter:
-        {globalState.counter}
-      </p>
-      <button type="button" onClick={() => globalActions.addToCounter(1)}>
-        +1 to global
-      </button>
-    </div>
-  );
-};
-
-```
-
-this function is for use state and actions out of component
-
-```javascript
-function myApi(){
-  ...
-  const [globalState, globalActions] = getGlobal();
-  ...
-}
-
-```
-
-### useLocalStore
-
-```javascript
-import { useLocalStore } from "react-global-hook";
-
-const App = () => {
-  const [state, actions] = useLocalStore(() => initialState, () => actions);
-
   return (
     <div>
       <p>
@@ -93,26 +61,74 @@ const App = () => {
       <button type="button" onClick={() => actions.addToCounter(1)}>
         +1 to global
       </button>
+      <OtherComp />
+    </div>
+  );
+};
+
+const OtherComp = () => {
+  const [state] = useGlobal(["counter"]);
+  return (
+    <p>
+      counter:
+      {state.counter}
+    </p>
+  );
+};
+
+```
+
+## useLocalStore
+Use this instead of useReducer
+
+```javascript
+
+import { useLocalStore } from "react-global-hook";
+
+const App = () => {
+  const [state, actions] = useLocalStore(
+    {
+      counter: 0,
+    },
+    {
+      increase: (store) => {
+        const newCounterValue = store.state.counter + 1;
+        store.setState({ counter: newCounterValue });
+      },
+    },
+  );
+
+  return (
+    <div>
+      <p>
+        counter:
+        {state.counter}
+      </p>
+      <button type="button" onClick={actions.increase}>
+        +1 to global
+      </button>
     </div>
   );
 };
 
 ```
 
-
-### createStore
+## Store
 
 ```javascript
 import { createStore } from "react-global-hook";
 
 const store = createStore(initialState, actions);
+
+const {state, actions, setState, addListener} = store;
+
 ```
-#### setState
+### setState
 Set partial state
 ```js
 store.setState({counter: store.state.counter+1})
 ```
-#### addListener
+### addListener
 Add an event listener.
 Listener run when a state update
 
@@ -130,7 +146,7 @@ function logState(){
 store.addListener(logState,[])
 ```
 
-#### actions
+### actions
 gives initialed actions 
 
 **Notes**
@@ -140,7 +156,7 @@ gives initialed actions
 store.actions.addToCounter(3)
 ```
 
-#### state 
+### state 
 gives current state
 ```js
 console.log(store.state.counter)
@@ -149,4 +165,4 @@ console.log(store.state.counter)
 ---
 
 ## stories
-- [React use Hooks: How to use React Global Hook](https://medium.com/@hosseinm.developer/manage-state-with-react-hooks-how-to-use-react-global-hook-785331e5f1f)
+- [React use Hooks: How to use React Global Hook](https://medium.com/@hosseinm.developer/manage-state-with-react-hooks-how-to-use-react-global-hook-785331e5f1f) @depreceted
