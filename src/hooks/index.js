@@ -3,7 +3,7 @@ import { createStore } from "../core";
 
 /**
  * @template S , A
- * @param {import("../core").Store<S, A>} Store
+ * @param {import("../core").Store<S, A>} store
  * @returns {(sensitiveStateKeys: (keyof S)[], listener: Function) => [S, A]}
  */
 export function createHooks(store) {
