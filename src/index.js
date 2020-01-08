@@ -4,7 +4,7 @@ import { createStore } from "./core";
 import { createHooks, useLocalStore } from "./hooks";
 
 /**
- * @deprecated
+ * @deprecated Please use createStore
  * @template S , A
  * @type {function}
  * @param {S} initialState
