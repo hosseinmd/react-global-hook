@@ -1,10 +1,10 @@
-import renderer from 'react-test-renderer';
-import React,{ Component } from "react";
-import {  createStore } from "../src";
+import renderer from "react-test-renderer";
+import React, { Component } from "react";
+import { createStore } from "../src";
 
 class TestComponent extends Component {
   constructor(props) {
-    super(props)
+    super(props);
     this.store = createStore(
       { count: 0 },
       {
@@ -26,12 +26,9 @@ class TestComponent extends Component {
     this.unsubscribe.remove();
   }
   render() {
-    const {state,actions}= this.store
+    const { state, actions } = this.store;
     return (
-      <p
-        onMouseEnter={actions.increase}
-        onMouseLeave={actions.decrease}
-      >
+      <p onMouseEnter={actions.increase} onMouseLeave={actions.decrease}>
         {state.count}
       </p>
     );
@@ -39,9 +36,7 @@ class TestComponent extends Component {
 }
 
 test("TestComponent changes the count when hovered", () => {
-  const component = renderer.create(
-    <TestComponent></TestComponent>,
-  );
+  const component = renderer.create(<TestComponent></TestComponent>);
   let tree = component.toJSON();
   expect(tree).toMatchSnapshot();
 
