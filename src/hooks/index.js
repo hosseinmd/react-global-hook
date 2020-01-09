@@ -4,10 +4,10 @@ import { createStore } from "../core";
 /**
  * @template S , A
  * @param {import("../core").Store<S, A>} store
- * @returns {(sensitiveStateKeys: (keyof S)[], listener: Function) => [S, A]}
+ * @returns {(sensitiveStateKeys: (keyof S)[], listener: (S) => void) => [S, A]}
  */
 export function createHooks(store) {
-  return function(sensitiveStateKeys, listener) {
+  function useHook(sensitiveStateKeys, listener) {
     if (typeof listener !== "function") listener = useState()[1];
 
     useEffect(() => {
@@ -15,7 +15,8 @@ export function createHooks(store) {
     }, []);
 
     return [store.state, store.actions];
-  };
+  }
+  return useHook;
 }
 
 /**

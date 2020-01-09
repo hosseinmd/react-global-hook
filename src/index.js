@@ -4,13 +4,13 @@ import { createStore } from "./core";
 import { createHooks, useLocalStore } from "./hooks";
 
 /**
- * @deprecated
+ * @deprecated Please use createStore
  * @template S , A
  * @type {function}
  * @param {S} initialState
  * @param {A} actions
  * @param {(store: import("./core").Store<S, A>) => void} initializer
- * @returns {[ (sensitiveStateKeys: (keyof S)[], listener: Function) => [S, A],() => [S, A] ]}
+ * @returns {[ (sensitiveStateKeys: (keyof S)[], listener: (S) => void) => [S, A],() => [S, A] ]}
  */
 export function createState(initialState, actions, initializer) {
   const store = createStore(initialState, actions, initializer);

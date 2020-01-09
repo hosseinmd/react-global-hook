@@ -9,7 +9,7 @@ import { addListener } from "./lib/Listener";
  * @typedef {object} Store
  * @property {S} state
  * @property {A} actions
- * @property {(listener: Function, sensitiveStatesKey: (keyof S)[]) => { remove: () => {} }} addListener
+ * @property {(listener: (S) => void, sensitiveStatesKey: (keyof S)[]) => { remove: () => {} }} addListener
  * @property {(partialState: S) => void} setState
  */
 

@@ -65,3 +65,6 @@ typings/
 
 # yarn
 yarn.lock
+
+# jest snapshots
+__snapshots__/
