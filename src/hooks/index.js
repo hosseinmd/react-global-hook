@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { createStore } from "../core";
 
 /**
@@ -33,9 +33,9 @@ export function useLocalStore(
   sensitiveStateKeys,
   listener,
 ) {
-  const useStore = useMemo(() => {
+  const useStore = useState(() => {
     const localStore = createStore(initialState, actions);
     return createHooks(localStore);
-  }, []);
+  }, [])[0];
   return useStore(sensitiveStateKeys, listener);
 }
