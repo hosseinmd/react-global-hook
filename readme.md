@@ -14,6 +14,7 @@ it's useful for global state management and complex components state
 - [Class Components](#classComponents)
 - [create Local Store ](#useLocalStore)
 - [Store](#Store)
+- [Performance](#Performance)
 - [Stories](#Stories)
 - [Examples](#Example)
 
@@ -179,6 +180,33 @@ gives initialed actions
 
 ```js
 store.actions.addToCounter(3);
+```
+
+## Performance
+
+Avoid unreasonable repetition of setState for better performance. Because after each setState, every component that is connected with hook will be rendered again and every function added to listener will be run again.
+For Example
+
+```javascript
+// Bad
+actions = {
+  clearSelected: store => {
+    store.setState({ selected: "" });
+    store.setState({ cols: [] });
+  },
+};
+```
+
+```javascript
+// Good
+actions = {
+  clearSelected: store => {
+    store.setState({
+      selected: "",
+      cols: [],
+    });
+  },
+};
 ```
 
 ---
