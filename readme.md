@@ -9,14 +9,15 @@ it's useful for global state management and complex components state
 
 ## TOC
 
-* [install](#install)
-* [Create Store](#createStore)
-* [Class Components](#classComponents)
-* [create Local Store ](#useLocalStore)
-* [Store](#Store)
-* [stories](#stories)
+- [Install](#Install)
+- [Create Store](#createStore)
+- [Class Components](#classComponents)
+- [create Local Store ](#useLocalStore)
+- [Store](#Store)
+- [Stories](#Stories)
+- [Examples](#Example)
 
-## install
+## Install
 
 ```npm
 npm i react-global-hook --save
@@ -182,6 +183,10 @@ store.actions.addToCounter(3);
 
 ---
 
-## stories
+## Stories
 
 - [React use Hooks: How to use React Global Hook](https://medium.com/@hosseinm.developer/manage-state-with-react-hooks-how-to-use-react-global-hook-785331e5f1f) @depreceted
+
+## Example
+
+- [Todo list - react-global-hook](https://codesandbox.io/s/react-global-hook-tpc3y)
