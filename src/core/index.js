@@ -21,7 +21,7 @@ import { addListener } from "./lib/Listener";
  * @returns {Store<S, A>}
  */
 export const createStore = (initialState, actions, initializer) => {
-  const store = { state: initialState, __listeners: {} };
+  const store = { state: { ...initialState }, __listeners: {} };
   store.setState = setState.bind(store);
   store.addListener = addListener.bind(store);
   store.actions = associateActions(store, actions);
