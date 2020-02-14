@@ -51,12 +51,15 @@ const actions = {
 const store = createStore(initialState, actions);
 const useGlobal = createHooks(store);
 
+const OtherComp = () => {
+  const [state] = useGlobal(["counter"]); // Will update based on changes to counter
+
+  return <p>Count:{state.counter}</p>;
+};
+
 const App = () => {
-  const [state, actions] = store;
-  // this component update just when `counter` did update
-  // if useGlobal parameter isn't defined this function will be update at any change state
-  // if parameter is empty array like [] this function will never be update
-  // if 2nd parameter define function this function will be run instead update componentF
+  const [, actions] = store; // will not update
+
   return (
     <div>
       <button type="button" onClick={actions.decrease}>
@@ -68,11 +71,6 @@ const App = () => {
       <OtherComp />
     </div>
   );
-};
-
-const OtherComp = () => {
-  const [state] = useGlobal(["counter"]);
-  return <p>Count:{state.counter}</p>;
 };
 ```
 
