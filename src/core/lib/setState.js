@@ -10,6 +10,6 @@ export function setState(newState = {}) {
       }
   }
   for (const listener of queueUpdate) {
-    typeof listener == "function" && listener({ ...this.state });
+    typeof listener === "function" && listener({ ...this.state });
   }
 }
