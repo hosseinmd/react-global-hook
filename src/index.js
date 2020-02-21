@@ -1,6 +1,3 @@
-"use strict";
-
-import { createStore } from "./core";
-import { createHooks, useLocalStore } from "./hooks";
-
-export { createStore, createHooks, useLocalStore };
+export { createStore } from "./core";
+export { createHooks, useLocalStore } from "./hooks";
+export { connect } from "./connect";
