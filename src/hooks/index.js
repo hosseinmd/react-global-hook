@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createStore } from "../core";
 
 /**
@@ -8,11 +8,20 @@ import { createStore } from "../core";
  */
 export function createHooks(store) {
   function useHook(sensitiveStateKeys, listener) {
-    if (typeof listener !== "function") listener = useState()[1];
+    const [, forceUpdate] = useState();
+    const listenerRemove = useRef();
+    if (typeof listener !== "function") listener = forceUpdate;
 
     useEffect(() => {
-      return store.addListener(listener, sensitiveStateKeys).remove;
-    }, []);
+      listenerRemove.current?.();
+
+      listenerRemove.current = store.addListener(
+        listener,
+        sensitiveStateKeys,
+      ).remove;
+
+      return listenerRemove.current;
+    }, [listener, sensitiveStateKeys]);
 
     return [store.state, store.actions];
   }
