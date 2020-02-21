@@ -80,21 +80,17 @@ if you want to use store in class component follow this approach
 
 ```javascript
 class TestComponent extends Component {
-  componentDidMount() {
-    this.unsubscribe = store.addListener(() => this.forceUpdate());
-  }
-  componentWillUnmount() {
-    this.unsubscribe.remove();
-  }
   render() {
-    const { state, actions } = store;
+    const { increase, decrease, count } = this.props;
     return (
-      <p onMouseEnter={actions.increase} onMouseLeave={actions.decrease}>
-        {state.count}
+      <p onMouseEnter={increase} onMouseLeave={decrease}>
+        {count}
       </p>
     );
   }
 }
+
+export default connect(store)(TestComponent);
 ```
 
 ## useLocalStore
