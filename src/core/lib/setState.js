@@ -1,5 +1,10 @@
+// @ts-check
+
 "use strict";
 
+/**
+ * @this {any}
+ */
 export function setState(newState = {}) {
   Object.assign(this.state, { ...newState });
   let queueUpdate = [];

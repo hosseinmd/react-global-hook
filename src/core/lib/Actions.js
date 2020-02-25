@@ -1,3 +1,5 @@
+// @ts-check
+
 "use strict";
 
 export function associateActions(store, actions = {}) {

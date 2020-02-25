@@ -17,7 +17,7 @@ import { addListener } from "./lib/Listener";
  * @template S , A
  * @param {S} initialState
  * @param {A} actions
- * @param {(store: Store<S, A>) => void} initializer
+ * @param {(store: Store<S, A>) => void} [initializer]
  * @returns {Store<S, A>}
  */
 export const createStore = (initialState, actions, initializer) => {
@@ -25,6 +25,6 @@ export const createStore = (initialState, actions, initializer) => {
   store.setState = setState.bind(store);
   store.addListener = addListener.bind(store);
   store.actions = associateActions(store, actions);
-  typeof initializer == "function" && initializer(store);
+  typeof initializer === "function" && initializer(store);
   return store;
 };

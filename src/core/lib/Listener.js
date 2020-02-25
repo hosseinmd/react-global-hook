@@ -1,5 +1,10 @@
+// @ts-check
+
 "use strict";
 
+/**
+ * @this {any}
+ */
 export function addListener(listener, sensitiveStatesKey) {
   if (!Array.isArray(sensitiveStatesKey))
     sensitiveStatesKey = Object.keys(this.state);
