@@ -1,20 +1,18 @@
 import { renderHook, act } from "@testing-library/react-hooks";
-import { useCallback } from "react";
 import { useLocalStore } from "../src";
 
 function TestComponent() {
-  const [state, actions] = useLocalStore(
+  const [{ count }, { increment }] = useLocalStore(
     { count: 0 },
-    {
-      increment(store) {
-        store.setState({ count: store.state.count + 1 });
+    ({ setState, getState }) => ({
+      increment() {
+        const { count } = getState();
+        setState({ count: count + 1 });
       },
-    },
+    }),
   );
 
-  const increment = useCallback(() => actions.increment(), []);
-
-  return { count: state.count, increment };
+  return { count, increment };
 }
 
 test("should increment counter", () => {

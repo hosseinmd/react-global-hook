@@ -1,59 +1,41 @@
 // @ts-check
 
-import { useState, useEffect, useRef } from "react";
-import { createStore } from "../core";
-
-/**
- * @template S , A
- * @typedef {(sensitiveStateKeys?: (keyof S)[], listener?: (S) => void) => [S, A]} UseHook
- */
-
-/**
- * @template S , A
- * @param {import("../core").Store<S, A>} store
- * @returns {UseHook<S,A>}
- */
-export function createHooks(store) {
-  /**@type {UseHook<S,A>} */
-  function useHook(sensitiveStateKeys, listener) {
-    const [, forceUpdate] = useState();
-    /**@type {{current: () => void | undefined}} */
-    const listenerRemove = useRef();
-    if (typeof listener !== "function") listener = forceUpdate;
-
-    useEffect(() => {
-      listenerRemove.current?.();
-
-      listenerRemove.current = store.addListener(
-        listener,
-        sensitiveStateKeys,
-      ).remove;
-
-      return listenerRemove.current;
-    }, [listener, sensitiveStateKeys]);
-
-    return [store.state, store.actions];
-  }
-  return useHook;
-}
+import { useRef, useMemo } from "react";
+import { useReducer } from "react";
 
 /**
  * @template S , A
  * @param {S} initialState
- * @param {A} actions
- * @param {(keyof S)[]} sensitiveStateKeys
- * @param {()=>void} listener
- * @returns {[S,A]}
+ * @param {(self: {
+  setState: (partialState: S) => void;
+  getState: () => S;
+}) => A} actions
+ * @param {(partialState: S) => S} initializer
+ * @returns {[S, A]}
  */
-export function useLocalStore(
-  initialState,
-  actions,
-  sensitiveStateKeys,
-  listener,
-) {
-  const useStore = useState(() => {
-    const localStore = createStore(initialState, actions);
-    return createHooks(localStore);
-  })[0];
-  return useStore(sensitiveStateKeys, listener);
+export function useLocalStore(initialState, actions, initializer) {
+  /**
+   * @type {[S, (any) => void]}
+   */
+  const [state, dispatch] = useReducer(reducer, initialState, initializer);
+
+  const stateRef = useRef(state);
+  stateRef.current = state;
+
+  const createdActions = useMemo(() => {
+    const setState = (partialState) => {
+      dispatch({ payload: partialState });
+    };
+
+    const getState = () => stateRef.current;
+
+    return actions({ setState, getState });
+  }, []);
+
+  return [state, createdActions];
 }
+
+const reducer = (state, { payload }) => ({
+  ...state,
+  ...payload,
+});
