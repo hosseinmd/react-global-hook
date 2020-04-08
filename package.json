@@ -4,7 +4,7 @@
   "description": "Hooks State Managment",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest --no-cache"
   },
   "repository": {
     "type": "git",
@@ -44,6 +44,9 @@
     "url": "https://github.com/hosseinmd/react-global-hook/issues"
   },
   "homepage": "https://github.com/hosseinmd/react-global-hook#readme",
+  "dependencies": {
+    "react-principal": "0.1.0"
+  },
   "devDependencies": {
     "@babel/cli": "^7.5.0",
     "@babel/core": "^7.5.0",
@@ -53,10 +56,12 @@
     "@react-native-community/eslint-plugin": "1.0.0",
     "@testing-library/react-hooks": "^1.0.4",
     "babel-jest": "^24.9.0",
-    "eslint": "6.8.0",
-    "eslint-config-prettier": "6.9.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.1",
     "jest": "^24.8.0",
-    "metro-react-native-babel-preset": "^0.58.0",
+    "metro-react-native-babel-preset": "^0.59.0",
+    "prettier": "^2.0.4",
+    "prettier-plugin-jsdoc": "^0.0.11",
     "react": "^16.8.6",
     "react-dom": "^16.12.0",
     "react-test-renderer": "^16.8.6",
@@ -64,5 +69,13 @@
   },
   "peerDependencies": {
     "react": ">=16.0"
+  },
+  "jest": {
+    "transformIgnorePatterns": [
+      "node_modules/(?!(react-principal)/)"
+    ],
+    "globals": {
+      "__DEV__": true
+    }
   }
 }
