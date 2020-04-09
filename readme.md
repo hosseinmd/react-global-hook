@@ -7,6 +7,8 @@
 Easy state management for react & react-native using hooks.
 it's useful for global state management and complex components state
 
+React-global-hook V2 uses the React.context
+
 ## TOC
 
 - [Install](#Install)
@@ -31,34 +33,45 @@ yarn add react-global-hook
 ## createStore
 
 ```javascript
-import { createStore, createHooks } from "react-global-hook";
+import { createStore, createHooks, Provider } from "react-global-hook";
 
 const initialState = {
   counter: 0,
 };
 
-const actions = {
-  increase(store) {
-    store.setState({ count: store.state.count + 1 });
+const actions = ({ setState, getState }) => ({
+  increase() {
+    const { count } = getState()
+    setState({ count: count + 1 });
   },
-  decrease(store) {
-    if (store.state.count <= 0) return;
+  decrease() {
+    const { count } = getState()
 
-    store.setState({ count: store.state.count - 1 });
+    if (count <= 0) return;
+
+    setState({ count: count - 1 });
   },
-};
+});
 
-const store = createStore(initialState, actions);
+/**
+ * The initializer run when Provider render
+ */
+const initializer = (state) => ({
+  ...state
+  counter: new Date().getDay()
+})
+
+const store = createStore(initialState, actions, initializer);
 const useGlobal = createHooks(store);
 
 const OtherComp = () => {
-  const [state] = useGlobal(["counter"]); // Will update based on changes to counter
+  const [state, actions] = useGlobal(["counter"]); // Will update based on changes to counter
 
   return <p>Count:{state.counter}</p>;
 };
 
-const App = () => {
-  const [, actions] = store; // will not update
+const Container = () => {
+  const actions = store.actions; // will not update
 
   return (
     <div>
@@ -72,6 +85,12 @@ const App = () => {
     </div>
   );
 };
+
+const App = () => (
+  <Provider store={store}>
+    <Container>
+  <Provider>
+)
 ```
 
 ## classComponents
@@ -101,23 +120,24 @@ Use this instead of useReducer
 import { useLocalStore } from "react-global-hook";
 
 const App = () => {
-  const [state, actions] = useLocalStore(
+  const [{counter}, actions] = useLocalStore(
     {
       counter: 0,
     },
-    {
-      increase: store => {
-        const newCounterValue = store.state.counter + 1;
-        store.setState({ counter: newCounterValue });
+    ({ setState, getState }) => ({
+      increase() {
+        const { counter } = getState()
+        const newCounterValue = counter + 1;
+        setState({ counter: newCounterValue });
       },
-    },
+    }),
   );
 
   return (
     <div>
       <p>
         Count:
-        {state.counter}
+        {counter}
       </p>
       <button type="button" onClick={actions.increase}>
         Increase
@@ -134,7 +154,7 @@ import { createStore } from "react-global-hook";
 
 const store = createStore(initialState, actions);
 
-const { state, actions, setState, addListener } = store;
+const { getState, actions, setState, useState, addListener } = store;
 ```
 
 ### setState
@@ -142,7 +162,7 @@ const { state, actions, setState, addListener } = store;
 Set partial state
 
 ```js
-store.setState({ counter: store.state.counter + 1 });
+setState({ counter: counter + 1 });
 ```
 
 ### addListener
@@ -153,27 +173,28 @@ Listener run when a state update
 ```js example
 //Run when counter update
 function logCounter() {
-  console.log(store.state.counter);
+  console.log(store.getState().counter);
 }
 store.addListener(logCounter, ["counter"]);
-
-// run when any change in state invoke
-function logState() {
-  console.log(store.state);
-}
-store.addListener(logState, []);
 ```
 
 ### actions
 
-gives initialed actions
-
-**Notes**
-
-> Store is bound in first params.
+gives bound actions
 
 ```js
 store.actions.addToCounter(3);
+```
+
+## Persist
+
+For persist state add your function to listener 
+
+```js
+function persister(state) {
+  asyncStorage.setItem("persist:key",JSON.stringify(state))
+}
+store.addListener(persister, ["token","username"]); // Whenever the token and username change, this function will call.
 ```
 
 ## Performance
@@ -183,24 +204,24 @@ For Example
 
 ```javascript
 // Bad
-actions = {
-  clearSelected: store => {
-    store.setState({ selected: "" });
-    store.setState({ cols: [] });
+actions = ({ setState, getState }) => ({
+  clearSelected: () => {
+    setState({ selected: "" });
+    setState({ row: [] });
   },
-};
+});
 ```
 
 ```javascript
 // Good
-actions = {
-  clearSelected: store => {
-    store.setState({
+actions = ({ setState, getState }) => ({
+  clearSelected: () => {
+    setState({
       selected: "",
-      cols: [],
+      row: [],
     });
   },
-};
+});
 ```
 
 ---
