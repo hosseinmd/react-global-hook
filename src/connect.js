@@ -1,9 +1,6 @@
 // @ts-check
 
-"use strict";
-
-import React from "react";
-import { createHooks } from "./hooks";
+import React, { memo, forwardRef } from "react";
 
 /**
  * @param {any} props
@@ -19,28 +16,45 @@ const DefaultMergeStatesAndActionsToProp = (props, state, actions) => ({
 /**
  * @template S , A
  * @param {import("./core").Store<S, A>} store
- * @param {(props: any,state: S, actions: A) => any} mergeStatesAndActionsToProp
+ * @param {(keyof S)[]} [sensitiveStatesKey]
+ * @param {(props: any, state: S, actions: A) => any} [mergeStatesAndActionsToProp]
  */
 export const connect = (
   store,
+  sensitiveStatesKey,
   mergeStatesAndActionsToProp = DefaultMergeStatesAndActionsToProp,
 ) =>
   /**
    * @template C
    * @param {React.ComponentType<C>} Comp
-   * @returns {React.ComponentType<C>}
+   * @returns {React.ForwardRefRenderFunction<C>}
    */
-  Comp => {
-    const useStore = createHooks(store);
-    return props => {
-      useStore();
+  (Comp) => {
+    return memo(
+      forwardRef((props, ref) => {
+        const state = store.useState(sensitiveStatesKey);
+        const actions = store.actions;
 
-      const merged = mergeStatesAndActionsToProp(
-        props,
-        store.state,
-        store.actions,
-      );
+        const merged = mergeStatesAndActionsToProp(props, state, actions);
 
-      return <Comp {...merged} />;
-    };
+        return <Comp {...merged} {...{ ref }} />;
+      }),
+    );
   };
+
+function createHOC(getWrapperComponent, wrapperName = "withHOC") {
+  return (WrappedComponent) => {
+    const WrapperComponent = getWrapperComponent(WrappedComponent);
+    WrapperComponent.router = WrappedComponent.router;
+
+    WrapperComponent.displayName = `${wrapperName}(${getDisplayName(
+      WrappedComponent,
+    )})`;
+
+    return WrapperComponent;
+  };
+}
+
+function getDisplayName(WrappedComponent) {
+  return WrappedComponent.displayName || WrappedComponent.name || "Component";
+}

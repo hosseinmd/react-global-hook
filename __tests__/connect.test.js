@@ -1,40 +1,47 @@
-import { renderHook, act } from "@testing-library/react-hooks";
-import { Component } from "react";
-import { createStore, connect } from "../src";
+import React, { Component } from "react";
+import renderer, { act } from "react-test-renderer";
+import { createStore, connect, Provider } from "../src";
 
-const store = createStore(
-  { count: 0 },
-  {
-    increase(store) {
-      store.setState({ count: store.state.count + 1 });
-    },
-    decrease(store) {
-      store.setState({ count: store.state.count - 1 });
-    },
+const store = createStore({ count: 0 }, ({ setState, getState }) => ({
+  increase() {
+    const { count } = getState();
+    setState({ count: count + 1 });
   },
-  () => {},
-);
+  decrease() {
+    const { count } = getState();
+    setState({ count: count - 1 });
+  },
+}));
 
 class TestComponent extends Component {
   render() {
-    return this.props;
+    const { count, increase, decrease } = this.props;
+    return <p {...{ count, increase, decrease }}>{count}</p>;
   }
 }
 
 const ConnectedTest = connect(store)(TestComponent);
 
 test("should increment counter", () => {
-  const { result } = renderHook(() => ConnectedTest());
+  let component = renderer.create(
+    <Provider store={store}>
+      <ConnectedTest />
+    </Provider>,
+  );
+  let tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 
   act(() => {
-    result.current.props.increase();
+    tree.props.increase();
   });
 
-  expect(result.current.props.count).toBe(1);
+  tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 
   act(() => {
-    result.current.props.decrease();
+    tree.props.decrease();
   });
 
-  expect(result.current.props.count).toBe(0);
+  tree = component.toJSON();
+  expect(tree).toMatchSnapshot();
 });
