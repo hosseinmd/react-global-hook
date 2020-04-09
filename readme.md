@@ -23,11 +23,11 @@ React-global-hook V2 uses the React.context
 ## Install
 
 ```npm
-npm i react-global-hook --save
+npm i react-global-hook@next --save
 ```
 
 ```npm
-yarn add react-global-hook
+yarn add react-global-hook@next
 ```
 
 ## createStore
