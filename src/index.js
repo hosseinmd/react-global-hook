@@ -1,5 +1,5 @@
 // @ts-check
 
 export { createStore, Provider } from "./core";
-export { useLocalStore } from "./hooks";
+export { useLocalStore, createHooks } from "./hooks";
 export { connect } from "./connect";

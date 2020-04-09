@@ -1,7 +1,27 @@
 // @ts-check
-
 import { useRef, useMemo } from "react";
 import { useReducer } from "react";
+
+/**
+ * @template S , A
+ * @typedef {(sensitiveStateKeys?: (keyof S)[]) => [S, A]} UseHook
+ */
+
+/**
+ * @template S , A
+ * @param {import("../core").Store<S, A>} store
+ * @returns {UseHook<S, A>}
+ */
+export function createHooks(store) {
+  /**
+   * @type {UseHook<S, A>}
+   */
+  const useStore = (sensitiveStatesKey) => {
+    const state = store.useState(sensitiveStatesKey);
+    return [state, store.actions];
+  };
+  return useStore;
+}
 
 /**
  * @template S , A
