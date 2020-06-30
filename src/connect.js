@@ -29,7 +29,7 @@ export const connect = (
    * @param {React.ComponentType<C>} Comp
    * @returns {React.ForwardRefRenderFunction<C>}
    */
-  (Comp) => {
+  createHOC((Comp) => {
     return memo(
       forwardRef((props, ref) => {
         const state = store.useState(sensitiveStatesKey);
@@ -40,7 +40,7 @@ export const connect = (
         return <Comp {...merged} {...{ ref }} />;
       }),
     );
-  };
+  });
 
 function createHOC(getWrapperComponent, wrapperName = "withHOC") {
   return (WrappedComponent) => {
